@@ -96,16 +96,10 @@ function App() {
   },[filterTasks, searchText]); 
   // ===========request=============  
 
-  // const request = (inputNumber: number) => {
-  //   if (inputNumber >= 1 && inputNumber <= 200) setInputNumber(inputNumber);
-  //   return fetchPost
-  // }
-
-  console.log(inputNumber)
-    /**
-     * если от 1-200
-     * то делаем запрос и воз
-     */
+  const request = (inputNumber: number) => {
+    if (inputNumber >= 1 && inputNumber <= 200) setInputNumber(inputNumber);
+    return fetchPost
+  }
 
   return (
     <div key='app' className="App">
