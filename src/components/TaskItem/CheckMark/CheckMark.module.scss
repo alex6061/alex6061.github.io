@@ -1,0 +1,31 @@
+.checkMark {
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+}
+
+.checkMark:checked::before {
+    content: './../../../img/checked.png';
+    width: 15px;
+    height: 15px;
+    background-color: #d49f0f;
+}
+
+.label {
+  display: flex;
+  &:hover {
+    &:before {
+      background-color: #e3c934;
+    }
+  }
+}
+
+.label::before {
+  margin-left: 5px;
+  border-radius: 4px;
+  content: ' ';
+  width: 12px;
+  height: 12px;
+  border: 1px solid #e3c934 ;
+}
+

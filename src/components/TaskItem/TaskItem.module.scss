@@ -1,0 +1,31 @@
+.TaskItem {
+  display: grid;
+  grid-template-columns: 13px 1fr 25px;
+  align-items: center;
+  gap: 10px;
+  background-color: #378052;
+  width: 100%;
+  padding: 10px 15px; 
+  margin: 0 auto;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  
+  p {
+    word-wrap: break-word;
+    hyphens: auto;
+    text-align: start;
+  }
+}
+
+.checked {
+  text-decoration: line-through;
+}
+
+.inner {
+  display: flex;
+  gap: 5px;
+  cursor: pointer; 
+}
+
+
+

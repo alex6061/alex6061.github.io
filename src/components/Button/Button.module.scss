@@ -1,0 +1,12 @@
+.Button {
+  background-color: #e3c934;
+  border-radius: 10px;
+  padding: 10px 15px;
+  transition: ease-in 150ms;
+  &:hover {
+    background-color: #d49f0f;
+  }
+  &:active {
+    background-color: #ab8111;
+  }
+}
