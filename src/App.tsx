@@ -5,39 +5,48 @@ import Button from './components/Button/Button';
 import Input from './components/Input/Input';
 import { ITask } from './model/model';
 import Title from './components/Title/Title';
+import Loader from './components/Loader/Loader';
 
 function App() {
 
   const LOCAL_TASKS = localStorage.getItem('localTasks') ?? '';
 
   const [tasks, setTasks] = useState<ITask[]>(!!LOCAL_TASKS.length ? JSON.parse(LOCAL_TASKS) : [])
+  console.log({tasks})
+
   const [inputText, setInputText] = useState ('') 
   const [inputNumber, setInputNumber] = useState(1) // для запроса из jsonPlaceholder 
   const [isSearch, setIsSearch] = useState (!!LOCAL_TASKS ? JSON.parse(LOCAL_TASKS) : []) // для поиска задач
   const [tasksSearch, setTasksSearch] = useState<ITask[]>(!!LOCAL_TASKS ? JSON.parse(LOCAL_TASKS) : [])
   const [searchText, setSearchText] = useState('')
+  const [isTaskLoading, setIsTaskLoading] = useState(false)
 
   const API_URL = `https://jsonplaceholder.typicode.com/todos/?_limit=${inputNumber}`
 
   // ==============fetch=============
   const fetchPost = async () => {
-    if (inputNumber >= 1 && inputNumber <= 200) setInputNumber(inputNumber);
-    const response = await fetch(`https://jsonplaceholder.typicode.com/todos/?_limit=${inputNumber}`);
-    const data = await response.json();
+    setIsTaskLoading(true)
+    setTimeout(async () => {
+      if (inputNumber >= 1 && inputNumber <= 200) setInputNumber(inputNumber);
 
-    let difference = data.filter((item: ITask) => 
-      !tasks.find((task) => task.id === item.id))
+      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/?_limit=${inputNumber}`);
+      const data = await response.json();
 
-     if(data) {
-      if(!!difference)  {
-        setTasks([...tasks, ...difference])
-        localStorage.setItem('localTasks',JSON.stringify([...tasks, ...difference]))
-      } else {
-        return
+      let difference = data.filter((item: ITask) => 
+        !tasks.find((task) => task.id === item.id))
+
+      if(data) {
+        if(!!difference)  {
+          setTasks([...tasks, ...difference])
+          localStorage.setItem('localTasks',JSON.stringify([...tasks, ...difference]))
+        } else {
+          return
+        }
       }
-    }
+      setIsTaskLoading(false)
+    }, 1000)
   }
-  
+
   useEffect(() => {
     if (localStorage.getItem("localTasks")) {
       const storedList = JSON.parse(localStorage.getItem("localTasks") ?? '');
@@ -101,6 +110,27 @@ function App() {
     return fetchPost
   }
 
+
+  const taskList = 
+    isSearch 
+      ? (
+        tasksSearch.map((task, index) => 
+          <TaskItem 
+            deleteItem={deleteTask} 
+            checked={checkedText}
+            number={index + 1} 
+            task={task} 
+            key={task.id}/>)) 
+      : (
+        tasks.map((task, index) => 
+          <TaskItem 
+            deleteItem={deleteTask} 
+            checked={checkedText}
+            number={index + 1} 
+            task={task} 
+            key={task.id}/>)
+        ) 
+
   return (
     <div key='app' className="App">
       <div className="box">
@@ -135,32 +165,17 @@ function App() {
           <Button addItem={fetchPost}>Запросить</Button>
         </div>
         <div className="task__wrapper">
-      
-        {isSearch 
-          ? (
-            tasksSearch.map((task, index) => 
-              <TaskItem 
-                deleteItem={deleteTask} 
-                checked={checkedText}
-                number={index + 1} 
-                task={task} 
-                key={task.id}/>)) 
-          : (
-            tasks.map((task, index) => 
-              <TaskItem 
-                deleteItem={deleteTask} 
-                checked={checkedText}
-                number={index + 1} 
-                task={task} 
-                key={task.id}/>)
-          )}
+          {
+            isTaskLoading
+              ? <div style={{display: 'flex', justifyContent: 'center', paddingTop: '30px'}}><Loader/></div>
+              : taskList
+          }
             
         </div>
       </div>
     </div>
   );
 }
-
 export default App;
 
 
