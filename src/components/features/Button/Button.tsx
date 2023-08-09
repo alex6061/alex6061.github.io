@@ -6,7 +6,7 @@ interface IButton {
   children: React.ReactNode
 }
 
-const Button: FC<IButton> = ({children, addItem}) => {
+const Button: FC<IButton> = ({ children, addItem }) => {
   const handleOnClick = () => {
     addItem()
   }

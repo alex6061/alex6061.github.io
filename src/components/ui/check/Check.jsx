@@ -4,11 +4,11 @@ import { ReactComponent as Checked }  from './checkmark.svg'
 
 const Check = () => {
   return (
-      <div 
-        type="Checkbox" 
-        className={cl.check} >
-          <Checked/>
-      </div>
+    <div 
+      type="Checkbox" 
+      className={cl.check} >
+        <Checked/>
+    </div>
   )
 }
 
